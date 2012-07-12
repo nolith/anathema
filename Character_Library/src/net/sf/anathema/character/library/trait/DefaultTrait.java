@@ -32,13 +32,19 @@ public class DefaultTrait extends AbstractFavorableTrait implements IFavorableDe
       getFavorization().updateFavorableStateToCaste();
     }
   };
+  
+  public DefaultTrait(IFavorableTraitRules traitRules, ICasteType[] castes, ITraitContext traitContext,
+          IBasicCharacterData basicData, ICharacterListening listening, IValueChangeChecker valueChangeChecker,
+          IIncrementChecker favoredIncrementChecker) {
+	  this(traitRules, castes, traitContext, basicData, listening, valueChangeChecker, null, favoredIncrementChecker);
+  }
 
   public DefaultTrait(IFavorableTraitRules traitRules, ICasteType[] castes, ITraitContext traitContext,
-                      IBasicCharacterData basicData, ICharacterListening listening,
-                      IValueChangeChecker valueChangeChecker, IIncrementChecker favoredIncrementChecker) {
+                      IBasicCharacterData basicData, ICharacterListening listening, IValueChangeChecker valueChangeChecker,
+                      IIncrementChecker casteIncrementChecker, IIncrementChecker favoredIncrementChecker) {
     this(traitRules, traitContext, valueChangeChecker);
     setTraitFavorization(
-            new TraitFavorization(basicData, castes, favoredIncrementChecker, this, traitRules.isRequiredFavored()));
+            new TraitFavorization(basicData, castes, casteIncrementChecker, favoredIncrementChecker, this, traitRules.isRequiredFavored()));
     listening.addChangeListener(changeListener);
     getFavorization().updateFavorableStateToCaste();
   }

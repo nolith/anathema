@@ -19,7 +19,7 @@ public class AttributesPresenter implements IContentPresenter {
   public AttributesPresenter(ICharacter character, IResources resources, IGroupedFavorableTraitViewFactory factory) {
     IIdentifiedTraitTypeGroup[] traitTypeGroups = character.getTraitConfiguration().getAttributeTypeGroups();
     this.attributeView = factory.createView(1);
-    this.presenter = new FavorableTraitConfigurationPresenter(traitTypeGroups, character, attributeView, resources);
+    this.presenter = new FavorableTraitConfigurationPresenter(traitTypeGroups, 0, character, attributeView, resources);
     this.contentHeader = resources.getString("CardView.AttributeConfiguration.Title"); //$NON-NLS-1$
   }
 

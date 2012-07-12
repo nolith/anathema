@@ -34,8 +34,9 @@ public class FavorableTraitConfigurationPresenter {
   private final IBasicCharacterData basicCharacterData;
   private final ICharacterListening characterListening;
   private final IPresentationProperties presentationProperties;
+  private final int castePicks;
 
-  public FavorableTraitConfigurationPresenter(IIdentifiedTraitTypeGroup[] traitTypeGroups, ICharacter character,
+  public FavorableTraitConfigurationPresenter(IIdentifiedTraitTypeGroup[] traitTypeGroups, int castePicks, ICharacter character,
                                               IGroupedFavorableTraitConfigurationView configurationView, IResources resources) {
     this.traitTypeGroups = traitTypeGroups;
     this.traitConfiguration = character.getTraitConfiguration();
@@ -44,6 +45,7 @@ public class FavorableTraitConfigurationPresenter {
     this.presentationProperties = character.getCharacterTemplate().getPresentationProperties();
     this.resources = resources;
     this.configurationView = configurationView;
+    this.castePicks = castePicks;
   }
 
   public void init(String typePrefix) {
@@ -63,7 +65,7 @@ public class FavorableTraitConfigurationPresenter {
   private void updateButtons() {
     for (IFavorableTrait trait : getAllTraits()) {
       IToggleButtonTraitView<?> view = traitViewsByTrait.get(trait);
-      boolean disabled = basicCharacterData.isExperienced() || trait.getFavorization().isCaste();
+      boolean disabled = basicCharacterData.isExperienced() || (!allowConfigureCasteTraits() && trait.getFavorization().isCasteOption());
       boolean favored = trait.getFavorization().isCasteOrFavored();
       view.setButtonState(favored, !disabled);
     }
@@ -103,7 +105,24 @@ public class FavorableTraitConfigurationPresenter {
     abilityView.addButtonSelectedListener(new IBooleanValueChangedListener() {
       @Override
       public void valueChanged(boolean newValue) {
-        favorableTrait.getFavorization().setFavored(newValue);
+    	switch (favorableTrait.getFavorization().getFavorableState()) {
+    	case Default:
+    		favorableTrait.getFavorization().setFavorableState(
+    				allowConfigureCasteTraits() && favorableTrait.getFavorization().isCasteOption() ?
+    				FavorableState.Caste : FavorableState.Favored);
+    		if (favorableTrait.getFavorization().getFavorableState() == FavorableState.Default) {
+    			favorableTrait.getFavorization().setFavored(true);
+    		}
+    		break;
+    	case Favored:
+    		favorableTrait.getFavorization().setFavored(false);
+    		break;
+    	case Caste:
+    		favorableTrait.getFavorization().setFavorableState(FavorableState.Default);
+    		favorableTrait.getFavorization().setFavored(true);
+    		abilityView.setButtonState(true, true);
+    		break;
+    	}
       }
     });
     favorableTrait.getFavorization().addFavorableStateChangedListener(new IFavorableStateChangedListener() {
@@ -114,6 +133,19 @@ public class FavorableTraitConfigurationPresenter {
     });
     updateView(abilityView, favorableTrait.getFavorization().getFavorableState());
     return abilityView;
+  }
+  
+  private boolean allowConfigureCasteTraits() {
+	  if (castePicks == 0) {
+		  return false;
+	  }
+	  for (IIdentifiedTraitTypeGroup group : traitTypeGroups) {
+		  if (group.getGroupId().getId().equals(basicCharacterData.getCasteType().getId()) &&
+			  group.getAllGroupTypes().length > castePicks) {
+			  return true;
+		  }
+	  }
+	  return false;
   }
 
   private void updateView(final IToggleButtonTraitView<?> abilityView, FavorableState state) {
@@ -130,7 +162,7 @@ public class FavorableTraitConfigurationPresenter {
 
       @Override
       public void visitCaste(FavorableState visitedState) {
-        abilityView.setButtonState(true, false);
+        abilityView.setButtonState(true, allowConfigureCasteTraits());
       }
     });
   }

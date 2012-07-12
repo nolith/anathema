@@ -15,6 +15,8 @@ public interface IFavorableTraitCostCalculator {
   int getBonusPointsSpent();
 
   int getFavoredPicksSpent();
+  
+  int getCastePicksSpent();
 
   FavorableTraitCost[] getCosts(IFavorableTrait trait);
 }

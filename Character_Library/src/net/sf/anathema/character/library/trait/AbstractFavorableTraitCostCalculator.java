@@ -286,4 +286,15 @@ public abstract class AbstractFavorableTraitCostCalculator implements IFavorable
       }
     });
   }
+  
+  @Override
+  public int getCastePicksSpent() {
+	int count = 0;
+	for (IFavorableTrait trait : traits) {
+		if (trait.getFavorization().isCaste()) {
+			count++;
+		}
+	}
+	return count;
+  }
 }

@@ -11,8 +11,12 @@ public interface IAbilityTypeVisitor {
   void visitBureaucracy();
 
   void visitCraft();
+  
+  void visitDrive();
 
   void visitDodge();
+  
+  void visitFirearms();
 
   void visitIntegrity();
 

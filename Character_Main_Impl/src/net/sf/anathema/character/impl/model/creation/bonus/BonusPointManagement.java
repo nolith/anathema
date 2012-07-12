@@ -11,6 +11,7 @@ import net.sf.anathema.character.generic.template.points.AttributeGroupPriority;
 import net.sf.anathema.character.impl.generic.GenericCharacter;
 import net.sf.anathema.character.impl.model.advance.models.AbstractAdditionalSpendingModel;
 import net.sf.anathema.character.impl.model.creation.bonus.ability.AbilityCostCalculator;
+import net.sf.anathema.character.impl.model.creation.bonus.ability.CasteAbilityPickModel;
 import net.sf.anathema.character.impl.model.creation.bonus.ability.DefaultAbilityBonusModel;
 import net.sf.anathema.character.impl.model.creation.bonus.ability.FavoredAbilityBonusModel;
 import net.sf.anathema.character.impl.model.creation.bonus.ability.FavoredAbilityPickModel;
@@ -148,6 +149,11 @@ public class BonusPointManagement implements IBonusPointManagement {
   public ISpendingModel getFavoredAbilityModel() {
     return new FavoredAbilityBonusModel(abilityCalculator, creationPoints);
   }
+  
+  @Override
+  public ISpendingModel getCasteAbilityPickModel() {
+    return new CasteAbilityPickModel(abilityCalculator, creationPoints);
+  }
 
   @Override
   public ISpendingModel getFavoredAbilityPickModel() {
@@ -247,6 +253,9 @@ public class BonusPointManagement implements IBonusPointManagement {
     if (getFavoredAttributeDotModel().getAlotment() > 0) models.add(getFavoredAttributeDotModel());
     if (getGenericAttributeDotModel(showingAttributeGroups).getAlotment() > 0)
       models.add(getGenericAttributeDotModel(showingAttributeGroups));
+    if (getCasteAbilityPickModel().getAlotment() > 0) {
+    	models.add(getCasteAbilityPickModel());
+    }
     models.add(getFavoredAbilityPickModel());
     if (getFavoredAbilityModel().getAlotment() > 0) models.add(getFavoredAbilityModel());
     models.add(getDefaultAbilityModel());

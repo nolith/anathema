@@ -13,6 +13,7 @@ import net.sf.anathema.character.impl.model.traits.backgrounds.BackgroundArbitra
 import net.sf.anathema.character.impl.model.traits.backgrounds.BackgroundConfiguration;
 import net.sf.anathema.character.impl.model.traits.creation.AbilityTypeGroupFactory;
 import net.sf.anathema.character.impl.model.traits.creation.AttributeTypeGroupFactory;
+import net.sf.anathema.character.impl.model.traits.creation.CasteIncrementChecker;
 import net.sf.anathema.character.impl.model.traits.creation.DefaultTraitFactory;
 import net.sf.anathema.character.impl.model.traits.creation.FavorableTraitFactory;
 import net.sf.anathema.character.impl.model.traits.creation.FavoredIncrementChecker;
@@ -81,22 +82,25 @@ public class CoreTraitConfiguration extends AbstractTraitCollection implements I
 
   private void addAttributes(ICharacterTemplate template) {
     IIncrementChecker incrementChecker = FavoredIncrementChecker.createFavoredAttributeIncrementChecker(template, this);
-    addFavorableTraits(attributeTraitGroups, incrementChecker);
+    addFavorableTraits(attributeTraitGroups, null, incrementChecker);
   }
 
   private void addAbilities(ICharacterTemplate template) {
-    IIncrementChecker incrementChecker = FavoredIncrementChecker.createFavoredAbilityIncrementChecker(template, this);
-    addFavorableTraits(abilityTraitGroups, incrementChecker);
+	IIncrementChecker casteIncrementChecker = CasteIncrementChecker.createCasteAbilityIncrementChecker(template, this);
+    IIncrementChecker favoredIncrementChecker = FavoredIncrementChecker.createFavoredAbilityIncrementChecker(template, this);
+    addFavorableTraits(abilityTraitGroups, casteIncrementChecker, favoredIncrementChecker);
   }
 
   private void addYozis(ICharacterTemplate template) {
     IIncrementChecker incrementChecker = FavoredIncrementChecker.createFavoredYoziIncrementChecker(template, this);
-    addFavorableTraits(yoziTraitGroups, incrementChecker);
+    addFavorableTraits(yoziTraitGroups, null, incrementChecker);
   }
 
-  private void addFavorableTraits(IIdentifiedCasteTraitTypeGroup[] traitGroups, IIncrementChecker incrementChecker) {
+  private void addFavorableTraits(IIdentifiedCasteTraitTypeGroup[] traitGroups,
+		  IIncrementChecker casteIncrementChecker,
+		  IIncrementChecker favoredIncrementChecker) {
     for (IIdentifiedCasteTraitTypeGroup traitGroup : traitGroups) {
-      addTraits(favorableTraitFactory.createTraits(traitGroup, incrementChecker));
+      addTraits(favorableTraitFactory.createTraits(traitGroup, casteIncrementChecker, favoredIncrementChecker));
     }
   }
 

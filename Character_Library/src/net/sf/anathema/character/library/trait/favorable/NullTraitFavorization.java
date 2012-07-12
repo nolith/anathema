@@ -59,4 +59,9 @@ public class NullTraitFavorization implements ITraitFavorization {
   public void ensureMinimalValue() {
     // nothing to do
   }
+
+  @Override
+  public boolean isCasteOption() {
+	return false;
+  }
 }

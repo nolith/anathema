@@ -39,12 +39,14 @@ public class FavorableTraitFactory extends AbstractTraitFactory {
 
   public IFavorableTrait[] createTraits(
 		  IIdentifiedCasteTraitTypeGroup group,
+	  IIncrementChecker casteIncrementChecker,
       IIncrementChecker favoredIncrementChecker) {
 	  ITraitType[] traitTypes = group.getAllGroupTypes();
     IFavorableTrait[] newTraits = new IFavorableTrait[traitTypes.length];
     for (int index = 0; index < newTraits.length; index++) {
     	ITraitType type = traitTypes[index];
         newTraits[index] = createTrait(type, group.getTraitCasteTypes(type),
+        	  casteIncrementChecker,
     		  favoredIncrementChecker);
     }
     return newTraits;
@@ -53,6 +55,7 @@ public class FavorableTraitFactory extends AbstractTraitFactory {
   public IFavorableTrait createTrait(
       ITraitType traitType,
       ICasteType[] casteTypes,
+      IIncrementChecker casteIncrementChecker,
       IIncrementChecker favoredIncrementChecker) {
     ITraitTemplate traitTemplate = templateCollection.getTraitTemplate(traitType);
     FavorableTraitRules favorableTraitRules = new FavorableTraitRules(
@@ -80,6 +83,7 @@ public class FavorableTraitFactory extends AbstractTraitFactory {
         basicCharacterData,
         characterListening,
         valueChecker,
+        casteIncrementChecker,
         favoredIncrementChecker);
   }
 }

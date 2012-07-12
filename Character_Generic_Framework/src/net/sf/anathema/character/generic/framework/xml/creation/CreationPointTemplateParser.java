@@ -12,6 +12,7 @@ public class CreationPointTemplateParser extends AbstractXmlTemplateParser<Gener
 
   private static final String ATTRIB_COUNT = "count"; //$NON-NLS-1$
   private static final String ATTRIB_FAVORED = "favored"; //$NON-NLS-1$
+  private static final String ATTRIB_CASTE_PICKS = "castePicks"; //$NON-NLS-1$
   private static final String ATTRIB_FAVORED_PICKS = "favoredPicks"; //$NON-NLS-1$
   private static final String ATTRIB_FAVORED_DOTS = "favoredDots"; //$NON-NLS-1$
   private static final String ATTRIB_GENERIC_DOTS = "genericDots";
@@ -65,7 +66,8 @@ public class CreationPointTemplateParser extends AbstractXmlTemplateParser<Gener
     int generalDots = ElementUtilities.getIntAttrib(element, ATTRIB_GENERAL, 0);
     int favoredDots = ElementUtilities.getIntAttrib(element, ATTRIB_FAVORED, 0);
     int favoredPicks = ElementUtilities.getIntAttrib(element, ATTRIB_FAVORED_PICKS, 0);
-    creationPoints.setAbilityCreationPoints(new AbilityCreationPoints(favoredPicks, favoredDots, generalDots));
+    int castePicks = ElementUtilities.getIntAttrib(element, ATTRIB_CASTE_PICKS, AbilityCreationPoints.NO_CASTE_PICKS);
+    creationPoints.setAbilityCreationPoints(new AbilityCreationPoints(castePicks, favoredPicks, favoredDots, generalDots));
   }
 
   private void parseAttributeCreationPoints(Element element, GenericCreationPoints creationPoints)

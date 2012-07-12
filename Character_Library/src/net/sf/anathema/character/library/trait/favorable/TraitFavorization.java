@@ -14,19 +14,31 @@ public class TraitFavorization implements ITraitFavorization {
   private FavorableState state;
   private final Announcer<IFavorableStateChangedListener> favorableStateControl = Announcer.to(IFavorableStateChangedListener.class);
   private final IIncrementChecker favoredIncrementChecker;
+  private final IIncrementChecker casteIncrementChecker;
   private final ITrait trait;
   private final ICasteType[] castes;
   private final boolean isRequiredFavored;
   private final IBasicCharacterData basicData;
+  
+  public TraitFavorization(
+	      IBasicCharacterData basicData,
+	      ICasteType[] castes,
+	      IIncrementChecker favoredIncrementChecker,
+	      ITrait trait,
+	      boolean isRequiredFavored) {
+	  this(basicData, castes, null, favoredIncrementChecker, trait, isRequiredFavored);
+  }
 
   public TraitFavorization(
       IBasicCharacterData basicData,
       ICasteType[] castes,
+      IIncrementChecker casteIncrementChecker,
       IIncrementChecker favoredIncrementChecker,
       ITrait trait,
       boolean isRequiredFavored) {
     this.basicData = basicData;
     this.castes = castes;
+    this.casteIncrementChecker = casteIncrementChecker;
     this.favoredIncrementChecker = favoredIncrementChecker;
     this.trait = trait;
     this.isRequiredFavored = isRequiredFavored;
@@ -41,10 +53,11 @@ public class TraitFavorization implements ITraitFavorization {
     if (this.state == state && state != FavorableState.Caste) {
       return;
     }
-    if (this.state == FavorableState.Caste && state == FavorableState.Favored) {
+    if (state == FavorableState.Favored && !favoredIncrementChecker.isValidIncrement(1)) {
       return;
     }
-    if (state == FavorableState.Favored && !favoredIncrementChecker.isValidIncrement(1)) {
+    if (state == FavorableState.Caste && casteIncrementChecker != null && 
+    	!casteIncrementChecker.isValidIncrement(1)) {
       return;
     }
     if (isRequiredFavored && state == FavorableState.Default) {
@@ -130,8 +143,7 @@ public class TraitFavorization implements ITraitFavorization {
 
   @Override
   public void updateFavorableStateToCaste() {
-    ICasteType casteType = basicData.getCasteType();
-    setCaste(isSupportedCasteType(casteType));
+    setCaste(isCasteOption());
   }
 
   private boolean isSupportedCasteType(ICasteType casteType) {
@@ -141,5 +153,10 @@ public class TraitFavorization implements ITraitFavorization {
     	if (caste == casteType)
     		return true;
     return false;
+  }
+
+  @Override
+  public boolean isCasteOption() {
+	return isSupportedCasteType(basicData.getCasteType());
   }
 }

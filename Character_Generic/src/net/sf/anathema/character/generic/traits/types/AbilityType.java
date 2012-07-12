@@ -33,6 +33,12 @@ public enum AbilityType implements ITraitType {
       visitor.visitWar();
     }
   },
+  Firearms {
+	    @Override
+	    public void accept(IAbilityTypeVisitor visitor) {
+	      visitor.visitFirearms();
+	    }
+  },
   Integrity {
     @Override
     public void accept(IAbilityTypeVisitor visitor) {
@@ -152,6 +158,12 @@ public enum AbilityType implements ITraitType {
     public void accept(IAbilityTypeVisitor visitor) {
       visitor.visitSocialize();
     }
+  },
+  Drive {
+	    @Override
+	    public void accept(IAbilityTypeVisitor visitor) {
+	      visitor.visitDrive();
+	    }
   };
 
   @Override

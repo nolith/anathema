@@ -10,6 +10,8 @@ public interface IBonusPointManagement {
   void recalculate();
 
   ISpendingModel getBackgroundModel();
+  
+  ISpendingModel getCasteAbilityPickModel();
 
   ISpendingModel getDefaultAbilityModel();
 

@@ -31,7 +31,7 @@ public class AbilityExperienceModel extends AbstractIntegerValueModel {
   private int getAbilityCosts() {
     int experienceCosts = 0;
     for (IFavorableTrait ability : getAllAbilities()) {
-      experienceCosts += calculator.getAbilityCosts(ability, ability.getFavorization().isCaste() || ability.getFavorization().isFavored());
+      experienceCosts += calculator.getAbilityCosts(ability, ability.getFavorization().isCasteOrFavored());
     }
     return experienceCosts;
   }

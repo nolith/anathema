@@ -6,7 +6,7 @@ import net.sf.anathema.character.generic.template.points.IAttributeGroupPriority
 import net.sf.anathema.lib.lang.clone.ReflectionCloneableObject;
 
 public class AttributeCreationPoints extends ReflectionCloneableObject<IAttributeCreationPoints> implements IAttributeCreationPoints {
-
+	
   private final int primary;
   private final int secondary;
   private final int tertiary;
@@ -99,5 +99,15 @@ public class AttributeCreationPoints extends ReflectionCloneableObject<IAttribut
   public int getDefaultDotCount() {
     // TODO Auto-generated method stub
     return 0;
+  }
+
+  @Override
+  public boolean hasCasteTraitPicks() {
+	return false;
+  }
+
+  @Override
+  public int getCasteTraitCount() {
+	return 0;
   }
 }

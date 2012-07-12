@@ -11,6 +11,8 @@ public interface ITraitFavorization {
   void addFavorableStateChangedListener(IFavorableStateChangedListener listener);
 
   FavorableState getFavorableState();
+  
+  boolean isCasteOption();
 
   boolean isCaste();
 

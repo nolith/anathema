@@ -20,7 +20,9 @@ public class AbilitiesPresenter implements IContentPresenter {
     IIdentifiedTraitTypeGroup[] traitTypeGroups = character.getTraitConfiguration().getAbilityTypeGroups();
     int columnCount = 2;
     this.abilityView = factory.createView(columnCount);
-    this.presenter = new FavorableTraitConfigurationPresenter(traitTypeGroups, character, abilityView, resources);
+    this.presenter = new FavorableTraitConfigurationPresenter(traitTypeGroups,
+    		character.getCharacterTemplate().getCreationPoints().getAbilityCreationPoints().getCasteTraitCount(),
+    		character, abilityView, resources);
     this.contentHeader = resources.getString("CardView.AbilityConfiguration.Title"); //$NON-NLS-1$
   }
 
