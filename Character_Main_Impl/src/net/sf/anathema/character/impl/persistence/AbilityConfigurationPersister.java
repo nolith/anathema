@@ -3,6 +3,7 @@ package net.sf.anathema.character.impl.persistence;
 import net.sf.anathema.character.generic.framework.ITraitReference;
 import net.sf.anathema.character.generic.traits.ITraitType;
 import net.sf.anathema.character.generic.traits.types.AbilityType;
+import net.sf.anathema.character.library.trait.favorable.FavorableState;
 import net.sf.anathema.character.library.trait.favorable.IFavorableTrait;
 import net.sf.anathema.character.library.trait.persistence.TraitPersister;
 import net.sf.anathema.character.library.trait.specialties.DefaultTraitReference;
@@ -22,6 +23,7 @@ import org.dom4j.Element;
 import java.util.List;
 
 import static net.sf.anathema.character.impl.persistence.ICharacterXmlConstants.ATTRIB_FAVORED;
+import static net.sf.anathema.character.impl.persistence.ICharacterXmlConstants.ATTRIB_CASTE;
 import static net.sf.anathema.character.impl.persistence.ICharacterXmlConstants.ATTRIB_NAME;
 import static net.sf.anathema.character.impl.persistence.ICharacterXmlConstants.TAG_ABILITIES;
 import static net.sf.anathema.character.impl.persistence.ICharacterXmlConstants.TAG_SPECIALTY;
@@ -43,6 +45,9 @@ public class AbilityConfigurationPersister {
       final ISpecialtiesConfiguration specialtyConfiguration) {
     ITraitType traitType = ability.getType();
     final Element abilityElement = persister.saveTrait(parent, traitType.getId(), ability);
+    if (ability.getFavorization().isCasteOption() && !ability.getFavorization().isCaste()) {
+        ElementUtilities.addAttribute(abilityElement, ATTRIB_CASTE, ability.getFavorization().isCaste());
+    }
     if (ability.getFavorization().isFavored()) {
       ElementUtilities.addAttribute(abilityElement, ATTRIB_FAVORED, ability.getFavorization().isFavored());
     }
@@ -104,6 +109,11 @@ public class AbilityConfigurationPersister {
     AbilityType abilityType = AbilityType.valueOf(abilityElement.getName());
     IFavorableTrait ability = configuration.getFavorableTrait(abilityType);
     persister.restoreTrait(abilityElement, ability);
+    if (ability.getFavorization().isCasteOption()) {
+    	ability.getFavorization().setFavorableState(
+    			ElementUtilities.getBooleanAttribute(abilityElement, ATTRIB_CASTE, true) ?
+    					FavorableState.Caste : FavorableState.Default);
+    }
     boolean favored = ElementUtilities.getBooleanAttribute(abilityElement, ATTRIB_FAVORED, false);
     ability.getFavorization().setFavored(favored);
     final ISpecialtiesConfiguration specialtyConfiguration = configuration.getSpecialtyConfiguration();

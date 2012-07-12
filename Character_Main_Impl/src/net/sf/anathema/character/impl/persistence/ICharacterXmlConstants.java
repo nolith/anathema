@@ -5,6 +5,7 @@ public interface ICharacterXmlConstants {
   String ATTRIB_AGE = "age"; //$NON-NLS-1$
   String ATTRIB_EXPERIENCE_LEARNED = "experienceLearned"; //$NON-NLS-1$
   String ATTRIB_FAVORED = "favored"; //$NON-NLS-1$
+  String ATTRIB_CASTE = "caste"; //$NON-NLS-1$
   String ATTRIB_EXPERIENCED = "experienced"; //$NON-NLS-1$
   String ATTRIB_NAME = "name"; //$NON-NLS-1$
   String ATTRIB_TYPE = "type"; //$NON-NLS-1$
