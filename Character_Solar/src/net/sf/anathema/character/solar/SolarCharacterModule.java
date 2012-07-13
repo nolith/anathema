@@ -54,6 +54,7 @@ public class SolarCharacterModule extends NullObjectCharacterModuleAdapter {
   @Override
   public void addCharacterTemplates(ICharacterGenerics characterGenerics) {
     registerParsedTemplate(characterGenerics, "template/Solar2nd.template"); //$NON-NLS-1$
+    registerParsedTemplate(characterGenerics, "template/Solar2ndHouse.template"); //$NON-NLS-1$
     registerParsedTemplate(characterGenerics, "template/Solar2ndDreams.template"); //$NON-NLS-1$
     registerParsedTemplate(characterGenerics, "template/Solar2ndDreamsEstablished.template"); //$NON-NLS-1$
     registerParsedTemplate(characterGenerics, "template/Solar2ndDreamsInfluential.template"); //$NON-NLS-1$

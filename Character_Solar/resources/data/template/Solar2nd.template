@@ -34,3 +34,5 @@
     <experiencePointCost uses="template/SolarExperienceCost2nd.template"/>
   </experience>
 </exaltedCharacterTemplate>
+
+
