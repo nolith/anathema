@@ -131,7 +131,7 @@ public class ExaltedCharacter implements ICharacter {
     IRegistry<String, IAdditionalModelFactory> additionalModelFactoryRegistry = generics.getAdditionalModelFactoryRegistry();
     for (IAdditionalTemplate additionalTemplate : additionalTemplates) {
       IAdditionalModelFactory factory = additionalModelFactoryRegistry.get(additionalTemplate.getId());
-      getExtendedConfiguration().addAdditionalModel(factory, additionalTemplate);
+      getExtendedConfiguration().addAdditionalModel(factory, additionalTemplate, generics);
     }
   }
 

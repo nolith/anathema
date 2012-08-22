@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.sf.anathema.character.generic.additionaltemplate.AdditionalModelType;
 import net.sf.anathema.character.generic.additionaltemplate.IAdditionalModel;
+import net.sf.anathema.character.generic.framework.ICharacterGenerics;
 import net.sf.anathema.character.generic.framework.additionaltemplate.model.IAdditionalModelFactory;
 import net.sf.anathema.character.generic.framework.additionaltemplate.model.ICharacterModelContext;
 import net.sf.anathema.character.generic.template.additional.IAdditionalTemplate;
@@ -21,8 +22,8 @@ public class ExtendedConfiguration implements IExtendedConfiguration {
     this.context = context;
   }
 
-  public void addAdditionalModel(IAdditionalModelFactory factory, IAdditionalTemplate template) {
-    IAdditionalModel model = factory.createModel(template, context);
+  public void addAdditionalModel(IAdditionalModelFactory factory, IAdditionalTemplate template, ICharacterGenerics generics) {
+    IAdditionalModel model = factory.createModel(template, context, generics);
     for (IChangeListener listener : listeners) {
       model.addChangeListener(listener);
     }
