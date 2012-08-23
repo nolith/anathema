@@ -1,7 +1,9 @@
 package net.sf.anathema.campaign.view.plot;
 
-import net.disy.commons.swing.layout.grid.GridDialogLayout;
-import net.disy.commons.swing.layout.grid.GridDialogLayoutData;
+import net.miginfocom.layout.AC;
+import net.miginfocom.layout.CC;
+import net.miginfocom.layout.LC;
+import net.miginfocom.swing.MigLayout;
 import net.sf.anathema.campaign.presenter.view.IPlotViewListener;
 import net.sf.anathema.campaign.presenter.view.plot.IPlotView;
 import net.sf.anathema.campaign.presenter.view.plot.IPlotViewProperties;
@@ -89,53 +91,19 @@ public class PlotView implements IPlotView {
   }
 
   private void initHierarchyButtons(IPlotViewProperties properties) {
-    SmartAction addAction = new SmartAction() {
-      private static final long serialVersionUID = 1112372805471188433L;
-
-      @Override
-      protected void execute(Component parentComponent) {
-        listenerControl.fireAddRequested(TreeUtilities.getSelectedHierachyNode(tree));
-      }
-    };
+    SmartAction addAction = new AddAction();
     properties.initHierarchyAddAction(addAction);
     addButton = new JButton(addAction);
 
-    SmartAction removeAction = new SmartAction() {
-      private static final long serialVersionUID = 167702035567735387L;
-
-      @Override
-      protected void execute(Component parentComponent) {
-        listenerControl.fireRemoveRequested(TreeUtilities.getSelectedHierachyNode(tree));
-      }
-    };
+    SmartAction removeAction = new RemoveAction();
     properties.initHierarchyRemoveAction(removeAction);
     removeButton = new JButton(removeAction);
 
-    SmartAction upAction = new SmartAction() {
-      private static final long serialVersionUID = -6261555855649984975L;
-
-      @Override
-      protected void execute(Component parentComponent) {
-        DefaultMutableTreeNode node = TreeUtilities.getSelectedHierachyNode(tree);
-        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) node.getParent();
-        int originalIndex = parentNode.getIndex(node);
-        listenerControl.fireMoveToRequested(node, originalIndex - 1);
-      }
-    };
+    SmartAction upAction = new UpAction();
     properties.initHierarchyUpAction(upAction);
     upButton = new JButton(upAction);
 
-    SmartAction downAction = new SmartAction() {
-      private static final long serialVersionUID = 8767113776923146733L;
-
-      @Override
-      protected void execute(Component parentComponent) {
-        DefaultMutableTreeNode node = TreeUtilities.getSelectedHierachyNode(tree);
-        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) node.getParent();
-        int originalIndex = parentNode.getIndex(node);
-        listenerControl.fireMoveToRequested(node, originalIndex + 1);
-      }
-    };
+    SmartAction downAction = new DownAction();
     properties.initHierarchyDownAction(downAction);
     downButton = new JButton(downAction);
   }
@@ -168,14 +136,15 @@ public class PlotView implements IPlotView {
   }
 
   private void initTreePanelGui(IPlotViewProperties properties) {
-    treePanel.setLayout(new GridDialogLayout(1, false));
-    treePanel.add(new JScrollPane(tree), GridDialogLayoutData.FILL_BOTH);
-    treePanel.add(createButtonPanel(properties));
+    treePanel.setLayout(
+            new MigLayout(new LC().wrapAfter(1).insets("0"), new AC().grow(100,0).fill(0), new AC().grow(100, 0).fill(0)));
+    treePanel.add(new JScrollPane(tree), new CC().grow().pushY());
+    treePanel.add(createButtonPanel(properties), new CC().dockSouth());
   }
 
   private Component createButtonPanel(IPlotViewProperties properties) {
     initHierarchyButtons(properties);
-    JPanel panel = new JPanel(new GridDialogLayout(4, false));
+    JPanel panel = new JPanel(new MigLayout(new LC().wrapAfter(4).insets("2"), new AC().grow().fill()));
     panel.add(removeButton);
     panel.add(addButton);
     panel.add(upButton);
@@ -216,5 +185,43 @@ public class PlotView implements IPlotView {
   @Override
   public JComponent getComponent() {
     return content;
+  }
+
+  private class DownAction extends SmartAction {
+
+    @Override
+    protected void execute(Component parentComponent) {
+      DefaultMutableTreeNode node = TreeUtilities.getSelectedHierachyNode(tree);
+      DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) node.getParent();
+      int originalIndex = parentNode.getIndex(node);
+      listenerControl.fireMoveToRequested(node, originalIndex + 1);
+    }
+  }
+
+  private class UpAction extends SmartAction {
+
+    @Override
+    protected void execute(Component parentComponent) {
+      DefaultMutableTreeNode node = TreeUtilities.getSelectedHierachyNode(tree);
+      DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) node.getParent();
+      int originalIndex = parentNode.getIndex(node);
+      listenerControl.fireMoveToRequested(node, originalIndex - 1);
+    }
+  }
+
+  private class RemoveAction extends SmartAction {
+
+    @Override
+    protected void execute(Component parentComponent) {
+      listenerControl.fireRemoveRequested(TreeUtilities.getSelectedHierachyNode(tree));
+    }
+  }
+
+  private class AddAction extends SmartAction {
+
+    @Override
+    protected void execute(Component parentComponent) {
+      listenerControl.fireAddRequested(TreeUtilities.getSelectedHierachyNode(tree));
+    }
   }
 }
