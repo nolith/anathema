@@ -21,6 +21,6 @@ public class MeritsModule extends NullObjectCharacterModuleAdapter {
 	    additionalViewFactoryRegistry.register(templateId, new MeritsViewFactory());
 	    IRegistry<String, IAdditionalPersisterFactory> persisterFactory = characterGenerics.getAdditonalPersisterFactoryRegistry();
 	    persisterFactory.register(templateId, new MeritsPersisterFactory());
-	    characterGenerics.getGlobalAdditionalTemplateRegistry().add(new MeritsTemplate());
+	    characterGenerics.getGlobalAdditionalTemplateRegistry().add(new MeritsTemplate(characterGenerics));
 	  }
 }

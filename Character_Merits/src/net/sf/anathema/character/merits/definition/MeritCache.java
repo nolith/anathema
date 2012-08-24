@@ -1,10 +1,8 @@
-package net.sf.anathema.character.merits.builder;
+package net.sf.anathema.character.merits.definition;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.anathema.character.merits.definition.IMeritCache;
-import net.sf.anathema.character.merits.definition.IMeritTemplate;
 
 
 public class MeritCache implements IMeritCache {

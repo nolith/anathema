@@ -10,6 +10,7 @@ import org.dom4j.io.SAXReader;
 import net.sf.anathema.character.generic.data.IExtensibleDataSet;
 import net.sf.anathema.character.generic.data.IExtensibleDataSetCompiler;
 import net.sf.anathema.character.merits.definition.IMeritTemplate;
+import net.sf.anathema.character.merits.definition.MeritCache;
 import net.sf.anathema.initialization.ExtensibleDataSetCompiler;
 import net.sf.anathema.lib.resources.ResourceFile;
 

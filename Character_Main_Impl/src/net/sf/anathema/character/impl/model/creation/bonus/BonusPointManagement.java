@@ -34,6 +34,7 @@ import net.sf.anathema.character.impl.util.GenericCharacterUtilities;
 import net.sf.anathema.character.library.trait.TraitCollectionUtilities;
 import net.sf.anathema.character.library.trait.visitor.IDefaultTrait;
 import net.sf.anathema.character.model.ICharacter;
+import net.sf.anathema.character.model.additional.IIntegralAdditionalModel;
 import net.sf.anathema.character.model.creation.IBonusPointManagement;
 import net.sf.anathema.character.model.traits.ICoreTraitConfiguration;
 import net.sf.anathema.character.presenter.overview.IAdditionalSpendingModel;
@@ -41,6 +42,7 @@ import net.sf.anathema.character.presenter.overview.IOverviewModel;
 import net.sf.anathema.character.presenter.overview.ISpendingModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BonusPointManagement implements IBonusPointManagement {
@@ -258,6 +260,13 @@ public class BonusPointManagement implements IBonusPointManagement {
     models.add(getBackgroundModel());
     bonusPointCalculator.addMiscModel(models);
     models.add(getTotalModel());
+    
+    for (IAdditionalModel model : character.getExtendedConfiguration().getAdditionalModels()) {
+    	if (model instanceof IIntegralAdditionalModel) {
+    		models.addAll(Arrays.asList(((IIntegralAdditionalModel)model).getCreationOverviewModels()));
+    	}
+    }
+    
     return models.toArray(new IOverviewModel[models.size()]);
   }
 
