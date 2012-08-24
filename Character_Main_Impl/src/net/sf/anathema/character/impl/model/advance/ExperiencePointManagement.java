@@ -1,5 +1,9 @@
 package net.sf.anathema.character.impl.model.advance;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import net.sf.anathema.character.generic.IBasicCharacterData;
 import net.sf.anathema.character.generic.additionaltemplate.IAdditionalModel;
 import net.sf.anathema.character.impl.model.advance.models.AbilityExperienceModel;
@@ -13,6 +17,7 @@ import net.sf.anathema.character.impl.model.advance.models.SpellExperienceModel;
 import net.sf.anathema.character.impl.model.advance.models.VirtueExperienceModel;
 import net.sf.anathema.character.impl.model.advance.models.WillpowerExperienceModel;
 import net.sf.anathema.character.model.ICharacter;
+import net.sf.anathema.character.model.additional.IIntegralAdditionalModel;
 import net.sf.anathema.character.model.advance.IExperiencePointManagement;
 import net.sf.anathema.character.model.traits.ICoreTraitConfiguration;
 import net.sf.anathema.character.presenter.overview.IValueModel;
@@ -38,17 +43,26 @@ public class ExperiencePointManagement implements IExperiencePointManagement {
   @Override
   @SuppressWarnings("unchecked")
   public IValueModel<Integer>[] getAllModels() {
-    return new IValueModel[] {
-        getAttributeModel(),
-        getAbilityModel(),
-        getSpecialtyModel(),
-        getCharmModel(),
-        getSpellModel(),
-        getVirtueModel(),
-        getWillpowerModel(),
-        getEssenceModel(),
-        getBackgroundModel(),
-        getMiscModel() };
+	List<IValueModel<Integer>> models = new ArrayList<IValueModel<Integer>>();
+	models.add(getAttributeModel());
+	models.add(getAbilityModel());
+	models.add(getSpecialtyModel());
+	models.add(getCharmModel());
+	models.add(getSpellModel());
+	models.add(getVirtueModel());
+	models.add(getWillpowerModel());
+	models.add(getEssenceModel());
+	models.add(getBackgroundModel());
+	
+	for (IAdditionalModel model : character.getExtendedConfiguration().getAdditionalModels()) {
+		if (model instanceof IIntegralAdditionalModel) {
+			models.addAll(Arrays.asList(((IIntegralAdditionalModel)model).getExperiencedOverviewModels()));
+		}
+	}
+	
+	models.add(getMiscModel());
+	
+	return models.toArray(new IValueModel[0]);
   }
 
   private IValueModel<Integer> getAttributeModel() {

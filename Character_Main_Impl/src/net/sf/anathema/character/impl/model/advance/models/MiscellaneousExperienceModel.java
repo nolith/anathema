@@ -2,6 +2,7 @@ package net.sf.anathema.character.impl.model.advance.models;
 
 import net.sf.anathema.character.generic.additionaltemplate.IAdditionalModel;
 import net.sf.anathema.character.model.ICharacter;
+import net.sf.anathema.character.model.additional.IIntegralAdditionalModel;
 
 public class MiscellaneousExperienceModel extends AbstractIntegerValueModel {
   private final ICharacter character;
@@ -19,7 +20,9 @@ public class MiscellaneousExperienceModel extends AbstractIntegerValueModel {
   private int getMiscCosts() {
     int total = 0;
     for (IAdditionalModel model : character.getExtendedConfiguration().getAdditionalModels()) {
-      total += model.getExperienceCalculator().calculateCost();
+    	if (!(model instanceof IIntegralAdditionalModel)) {
+    		total += model.getExperienceCalculator().calculateCost();
+    	}
     }
     total += character.getExperiencePoints().getExtraSpendings();
     return total;

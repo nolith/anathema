@@ -3,17 +3,19 @@ package net.sf.anathema.character.merits;
 import net.sf.anathema.character.generic.additionaltemplate.AdditionalModelType;
 import net.sf.anathema.character.generic.additionaltemplate.IAdditionalModelBonusPointCalculator;
 import net.sf.anathema.character.generic.additionaltemplate.IAdditionalModelExperienceCalculator;
-import net.sf.anathema.character.generic.additionaltemplate.NullAdditionalModelExperienceCalculator;
 import net.sf.anathema.character.generic.framework.additionaltemplate.model.ICharacterModelContext;
 import net.sf.anathema.character.generic.template.additional.IAdditionalTemplate;
 import net.sf.anathema.character.merits.definition.IMeritCache;
 import net.sf.anathema.character.merits.model.IMeritsModel;
 import net.sf.anathema.character.merits.model.MeritsBonusPointCostCalculator;
+import net.sf.anathema.character.merits.model.MeritsExperiencePointCostCalculator;
 import net.sf.anathema.character.merits.model.MeritsModel;
 import net.sf.anathema.character.merits.overview.MeritsCreationOverviewModel;
+import net.sf.anathema.character.merits.overview.MeritsExperiencedOverviewModel;
 import net.sf.anathema.character.merits.template.MeritsTemplate;
 import net.sf.anathema.character.model.additional.IIntegralAdditionalModel;
 import net.sf.anathema.character.presenter.overview.IOverviewModel;
+import net.sf.anathema.character.presenter.overview.IValueModel;
 import net.sf.anathema.lib.control.IChangeListener;
 
 public class MeritsAdditionalModel implements IIntegralAdditionalModel {
@@ -55,7 +57,7 @@ public class MeritsAdditionalModel implements IIntegralAdditionalModel {
 
 	@Override
 	public IAdditionalModelExperienceCalculator getExperienceCalculator() {
-		return new NullAdditionalModelExperienceCalculator();
+		return new MeritsExperiencePointCostCalculator(model);
 	}
 
 	@Override
@@ -64,8 +66,9 @@ public class MeritsAdditionalModel implements IIntegralAdditionalModel {
 				meritsTemplate.getFreeMeritDotAlotment(context.getBasicCharacterContext().getTemplateType())) };
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public IOverviewModel[] getExperiencedOverviewModels() {
-		return new IOverviewModel[0];
+	public IValueModel<Integer>[] getExperiencedOverviewModels() {
+		return new IValueModel[] { new MeritsExperiencedOverviewModel((MeritsExperiencePointCostCalculator) getExperienceCalculator())};
 	}
 }

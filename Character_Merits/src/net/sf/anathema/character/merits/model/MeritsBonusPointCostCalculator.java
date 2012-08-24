@@ -13,10 +13,10 @@ public class MeritsBonusPointCostCalculator implements IAdditionalModelBonusPoin
 	@Override
 	public void recalculate() {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	public int getSpentFreeDots() {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 
