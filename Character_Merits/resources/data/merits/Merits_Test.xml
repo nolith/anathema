@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<merits>
+    <merit name="Familiar" type="Story" values="1-3"/>
+    <merit name="Contacts" type="Story" values="1,3,5" allowMultiplePurchases="true"/>
+</merits>
