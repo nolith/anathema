@@ -11,6 +11,9 @@ import net.sf.anathema.lib.xml.ElementUtilities;
 
 import org.dom4j.Element;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 public class AdditionalModelPersister {
 
   private static final String TAG_MODEL = "Model"; //$NON-NLS-1$
@@ -59,6 +62,12 @@ public class AdditionalModelPersister {
 
   public void save(Element parent, IAdditionalModel[] additionalModels) {
     Element overallElement = parent.addElement(TAG_ADDITIONAL_MODELS);
+    Arrays.sort(additionalModels, new Comparator<IAdditionalModel>() {
+      @Override
+      public int compare(IAdditionalModel o1, IAdditionalModel o2) {
+        return o1.getTemplateId().compareTo(o2.getTemplateId());
+      }
+    });
     for (IAdditionalModel model : additionalModels) {
       Element contentElement = createModelContentElement(overallElement, model);
       IAdditionalPersisterFactory factory = registry.get(model.getTemplateId());
