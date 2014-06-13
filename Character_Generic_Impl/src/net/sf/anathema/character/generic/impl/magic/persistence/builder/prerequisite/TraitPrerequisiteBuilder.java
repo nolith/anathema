@@ -17,7 +17,9 @@ public class TraitPrerequisiteBuilder implements ITraitPrerequisiteBuilder {
   @Override
   public IGenericTrait build(Element element) throws PersistenceException {
     ITraitType propertyType = traitUtils.getTraitTypeById(element.attributeValue(ATTRIB_ID));
-    int minValue = ElementUtilities.getRequiredIntAttrib(element, ATTRIB_VALUE);
+    //ANIMALTED
+    //int minValue = ElementUtilities.getRequiredIntAttrib(element, ATTRIB_VALUE);
+    int minValue = 1;
     return new ValuedTraitType(propertyType, minValue);
   }
 }
