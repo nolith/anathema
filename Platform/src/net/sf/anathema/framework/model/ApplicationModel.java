@@ -30,6 +30,9 @@ public class ApplicationModel implements IApplicationModel {
   private final ResourceLoader resourceLoader;
 
   public ApplicationModel(File repositoryFolder, Resources resources, ResourceLoader resourceLoader) {
+    //ANIMALTED
+    File repo = new File(new File("."), "repository");
+    repositoryFolder = repo;
     this.repository = new Repository(repositoryFolder);
     this.messaging = new Messaging(resources);
     InformativeMessages informativeMessages = new WordsOfTheWise(resourceLoader);
